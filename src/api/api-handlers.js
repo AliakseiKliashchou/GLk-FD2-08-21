@@ -1,13 +1,61 @@
+require('firebase/auth');
 import firebase from 'firebase/app';
-import { FIREBASE_CONFIG, databaseURL } from './api-config.js';
+import axios from 'axios';
+
+import { FIREBASE_CONFIG, databaseURL, authUrl } from './api-config.js';
 
 const headers = {
   'Content-Type': 'application/json'
+};
+
+export const initApi = () => {
+  firebase.initializeApp(FIREBASE_CONFIG);
 }
 
-// export const initApi = () => {
-//   firebase.initializeApp(FIREBASE_CONFIG);
-// }
+export const createPost = post => {
+  const { userId, name, email, date, title, content } = post;
+  return fetch(`${databaseURL}/posts.json`,
+    {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        userId,
+        name,
+        email,
+        date,
+        title,
+        content
+      })
+    }
+
+  );
+}
+
+export const getPosts = () => {
+  return fetch(`${databaseURL}/posts.json`, { headers })
+    .then( response => response.json())
+    .then( result => {
+      const transformedPostsArray = Object.keys(result).map( key => ({
+        ...result[key],
+        id: key
+      }));
+      return transformedPostsArray;
+    });
+}
+
+export const signIn = () => {
+  return axios.post(authUrl, {
+    email: 'test@mail.com',
+    password: '111111',
+    returnSecureToken: true
+  })
+    .then(response => response)
+    .catch(err => {
+      console.log(err)
+    });
+}
+
+initApi();
 
 // export const createUser = ({ username, age, creationDate }) => {
 //   fetch(
@@ -100,33 +148,4 @@ const headers = {
 //     .then( result => console.log(result));
 // }
 
-export const createPost = post => {
-  const { userId, name, email, date, title, content } = post;
-  return fetch(`${databaseURL}/posts.json`,
-    {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        userId,
-        name,
-        email,
-        date,
-        title,
-        content
-      })
-    }
 
-  );
-}
-
-export const getPosts = () => {
-  return fetch(`${databaseURL}/posts.json`, { headers })
-    .then( response => response.json())
-    .then( result => {
-      const transformedPostsArray = Object.keys(result).map( key => ({
-        ...result[key],
-        id: key
-      }));
-      return transformedPostsArray;
-    });
-}

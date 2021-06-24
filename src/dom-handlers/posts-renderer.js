@@ -1,6 +1,7 @@
 import moment from 'moment';
+import { v4 as uuidv4 } from 'uuid';
 
-import { getPosts } from '../api/api-handlers';
+import { getPosts, createPost } from '../api/api-handlers';
 
 export const renderPosts = () => {
   getPosts()
@@ -30,4 +31,30 @@ export const renderPosts = () => {
         postsContainer.append(post);
       });
     });
+}
+
+export const postFormHandler = () => {
+  const post_form = document.getElementById('post_form');
+  const title_input = document.getElementById('title_input');
+  const post_content = document.getElementById('post_content');
+
+  const post = {
+    userId: uuidv4(),
+    name: 'Alex',
+    email: 'test@mail.com',
+    date: moment().format(),
+    title: null,
+    content: null
+  };
+
+  post_form.addEventListener('submit', event => {
+    event.preventDefault();
+    post.title = title_input.value;
+    post.content = post_content.value;
+    createPost(post)
+      .then( () => renderPosts());
+    title_input.value = null;
+    post_content.value = null;
+  });
+
 }

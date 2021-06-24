@@ -13,7 +13,22 @@
     <title>Sign In</title>
   </head>
   <body>
-    <p>Sign In</p>
+    <div class="header">
+      <h1>Sign In</h1>
+    </div>
+    <div class="sign-in">
+      <form class="sign-in__form">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Sign In</button>
+      </form>
+    </div>
 
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
