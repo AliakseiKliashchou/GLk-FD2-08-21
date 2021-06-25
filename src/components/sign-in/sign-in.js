@@ -1,4 +1,6 @@
 import { signIn } from '../../api/api-handlers';
+import { setToken } from '../../shared/ls-service';
+import { routes } from '../../shared/constants/routes';
 
 export const signInHandler = () => {
   const signInForm = document.querySelector('.sign-in__form');
@@ -7,7 +9,14 @@ export const signInHandler = () => {
     event.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    signIn()
-      .then( result => console.log(result));
+    signIn(email, password)
+      .then( response => {
+        if (response) {
+          const { idToken: token } = response.data;
+          setToken(token);
+          window.location.href = routes.home;
+        }
+
+      });
   });
 }
