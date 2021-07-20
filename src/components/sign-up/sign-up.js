@@ -26,6 +26,7 @@ export const signUpHandler = () => {
   // });
 
   password_1.oninput = () => {
-    passwordStrengthController(password_1.value)
+    passwordStrengthController(password_1.value);
   }
+
 }
