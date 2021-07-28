@@ -16,33 +16,51 @@
     <div class="header">
       <h1>Sign Up</h1>
     </div>
-    <div class="sign-in">
+    <div class="sign-up">
       <form class="sign-up__form">
         <div class="mb-3">
           <label for="name" class="form-label">Name</label>
-          <input type="text" class="form-control" id="name">
+          <input type="text" class="form-control" id="userName">
+          <p class="input-error" id="userNameError"></p>
         </div>
         <div class="mb-3">
           <label for="surname" class="form-label">Surname</label>
-          <input type="text" class="form-control" id="surname">
+          <input type="text" class="form-control" id="userSurname">
+          <p class="input-error" id="userSurnameError"></p>
         </div>
         <div class="mb-3">
           <label for="birth" class="form-label">Birth date</label>
           <input type="date" class="form-control" id="birth">
+          <p class="input-error" id="birtdateError"></p>
         </div>
         <div class="mb-3">
           <label for="email" class="form-label">Email address</label>
           <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+          <p class="input-error" id="emailError"></p>
         </div>
         <div class="mb-3">
           <label for="password_1" class="form-label">Password</label>
-          <input type="password" class="form-control" id="password_1">
+          <input type="text" class="form-control" id="password_1">
+        </div>
+        <div class="sign-up__form-password-strength">
+          <p>Password Strength:</p>
+          <div class="sign-up__form-password-strength-status">
+            <div class="sign-up__form-password-strength-status-filler"></div>
+            <p class="sign-up__form-password-strength-status-current"></p>
+            <div class="sign-up__form-password-strength-status-info">
+              <p class="sign-up__form-password-strength-status-info-uppercase"></p>
+              <p class="sign-up__form-password-strength-status-info-lowercase"></p>
+              <p class="sign-up__form-password-strength-status-info-numbers"></p>
+              <p class="sign-up__form-password-strength-status-info-characters"></p>
+            </div>
+          </div>
         </div>
         <div class="mb-3">
           <label for="password_2" class="form-label">Confirm password</label>
           <input type="password" class="form-control" id="password_2">
+          <p class="input-error" id="passwordsCompareError"></p>
         </div>
-        <button type="submit" class="btn btn-primary">Sign Up</button>
+        <button type="submit" class="btn btn-primary" id="signUpBtn">Sign Up</button>
       </form>
       <a href="/sign-in.html">Login</a>
     </div>
