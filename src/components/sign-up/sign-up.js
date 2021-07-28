@@ -37,7 +37,7 @@ export const signUpHandler = () => {
       isValid: false
     },
     birth: {
-      isValid: false
+      isValid: true
     },
     email: {
       isValid: false
@@ -56,24 +56,25 @@ export const signUpHandler = () => {
   signUpForm.addEventListener('submit', event => {
     event.preventDefault();
 
-    signUp(email, password)
-      .then( response => {
-        if (response) {
-          console.log(response.user.email);
-          const { email } = response.user;
-          setUserEmail(email);
-        }
-      });
+    const user = {
+      firstName: userNameInput.value,
+      lastName: userSurnameInput.value,
+      email: emailInput.value,
+      birth: birthInput.value,
+      password: password_1.value
+    }
+
+    signUp(user);
   });
 
   birthInput.oninput = () => {
-    if (birthdateValidator(birthInput.value)) {
-      formFields.birth.isValid = true;
-      hideBirthdateError();
-    } else {
-      formFields.birth.isValid = false;
-      showBirthdateError();
-    }
+    // if (birthdateValidator(birthInput.value)) {
+    //   formFields.birth.isValid = true;
+    //   hideBirthdateError();
+    // } else {
+    //   formFields.birth.isValid = false;
+    //   showBirthdateError();
+    // }
 
     checkFormValid();
   }

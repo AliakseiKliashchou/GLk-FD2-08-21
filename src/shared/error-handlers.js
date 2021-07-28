@@ -25,7 +25,7 @@ export const hideEmailErrorMessage = () => {
 export const showErrorNotification = error => {
   const notification = document.createElement('div');
   const body = document.getElementsByTagName('body')[0];
-  notification.innerText = error.response.data.error.message;
+  notification.innerText = error.response ? error.response.data.error.message : error.message;
   notification.className = 'error-notification';
   body.append(notification);
   setTimeout( () => notification.style.display = 'none', 5000);
@@ -72,5 +72,16 @@ export const showBirthdateError = () => {
 
 export const hideBirthdateError = () => {
   const errorTag = document.getElementById('birtdateError');
+  errorTag.style.display = 'none';
+}
+
+export const showRecoverEmailError = () => {
+  const errorTag = document.getElementById('recoverEmailError');
+  errorTag.style.display = 'block';
+  errorTag.innerText = ERROR_MESSAGES.email;
+}
+
+export const hideRecoverEmailError = () => {
+  const errorTag = document.getElementById('recoverEmailError');
   errorTag.style.display = 'none';
 }

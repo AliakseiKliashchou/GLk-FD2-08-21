@@ -30,6 +30,32 @@
         </div>
         <button id="signInBtn" type="submit" class="btn btn-primary">Sign In</button>
       </form>
+
+      <a href="/" data-bs-toggle="modal" data-bs-target="#passwordRecoverModal">Forgot your password?</a>
+
+      <div class="modal fade" id="passwordRecoverModal" tabindex="-1" aria-labelledby="passwordRecoverModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="passwordRecoverModalLabel">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <p class="modal-info">Enter your email below and we'll send you the letter</p>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="recoverEmail" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="recoverEmailInput" aria-describedby="emailHelp">
+                <p class="input-error" id="recoverEmailError"></p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="recoverBtn">Send email</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <a href="/sign-up.html">Register</a>
     </div>
 

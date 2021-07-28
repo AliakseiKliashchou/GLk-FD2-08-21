@@ -1,12 +1,13 @@
-import { signIn } from '../../api/api-handlers';
-import { setToken } from '../../shared/ls-service';
-import { routes } from '../../shared/constants/routes';
+import { signIn, passwordRecovery } from '../../api/api-handlers';
 import { passwordLengthValidator, emailValidator } from '../../shared/validators';
 import {
   showPasswordLengthErrorMessage,
   hidePasswordLengthErrorMessage,
   showEmailErrorMessage,
-  hideEmailErrorMessage
+  hideEmailErrorMessage,
+  showErrorNotification,
+  showRecoverEmailError,
+  hideRecoverEmailError
 } from '../../shared/error-handlers';
 
 export const signInHandler = () => {
@@ -14,6 +15,8 @@ export const signInHandler = () => {
   const signInBtn = document.getElementById('signInBtn');
   const emailInput = document.getElementById('email');
   const passwordInput = document.getElementById('password');
+  const recoverEmailInput = document.getElementById('recoverEmailInput');
+  const recoverBtn = document.getElementById('recoverBtn');
 
   const formFields = {
     email: {
@@ -25,19 +28,14 @@ export const signInHandler = () => {
   }
 
   signInBtn.setAttribute('disabled', true);
+  recoverBtn.setAttribute('disabled', true);
 
   signInForm.addEventListener('submit', event => {
     event.preventDefault();
     const email = emailInput.value;
     const password = passwordInput.value;
-    signIn(email, password)
-      .then( response => {
-        if (response) {
-          const { idToken: token } = response.data;
-          setToken(token);
-          window.location.href = routes.home;
-        }
-      });
+
+    signIn(email, password).catch( error => showErrorNotification(error));
   });
 
   passwordInput.oninput = () => {
@@ -75,6 +73,25 @@ export const signInHandler = () => {
 
   emailInput.onblur = () => {
     !emailValidator(emailInput.value) ? showEmailErrorMessage() : hideEmailErrorMessage();
+  }
+
+  recoverEmailInput.oninput = () => {
+    if (emailValidator(recoverEmailInput.value)) {
+      hideRecoverEmailError();
+      recoverEmailInput.classList.remove('invalid');
+      recoverBtn.removeAttribute('disabled');
+    } else {
+      recoverEmailInput.classList.add('invalid');
+      recoverBtn.setAttribute('disabled', true);
+    }
+  }
+
+  recoverEmailInput.onblur = () => {
+    !emailValidator(recoverEmailInput.value) ? showRecoverEmailError() : hideRecoverEmailError();
+  }
+
+  recoverBtn.onclick = () => {
+    passwordRecovery(recoverEmailInput.value);
   }
 
   const checkFormValid = () => {
