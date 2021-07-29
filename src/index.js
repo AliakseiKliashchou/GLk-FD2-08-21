@@ -7,8 +7,10 @@ import { signUpHandler } from './components/sign-up/sign-up';
 import './styles/styles.scss';
 
 window.onload = () => {
-
+  const spiner = document.querySelector('.wrapperSpiner');
   const pathname = Object.values(paths).find( path => path === window.location.pathname );
+
+  spiner.style.display = 'none';
 
   switch (pathname) {
     case paths.home:
