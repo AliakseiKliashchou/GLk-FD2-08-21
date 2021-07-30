@@ -1,13 +1,13 @@
 import { signUp } from '../../api/api-handlers';
 import { setUserEmail } from '../../shared/ls-service';
-import { 
-  passwordStrengthController, 
+import {
+  passwordStrengthController,
   emailValidator,
   nameValidator,
-  birthdateValidator
+  birthdateValidator,
 } from '../../shared/validators';
-import { 
-  showPasswordCompareError, 
+import {
+  showPasswordCompareError,
   hidePasswordCompareError,
   hideEmailErrorMessage,
   showEmailErrorMessage,
@@ -16,8 +16,17 @@ import {
   showUserSurnameError,
   hideUserSurnameError,
   showBirthdateError,
-  hideBirthdateError
+  hideBirthdateError,
 } from '../../shared/error-handlers';
+import { showPreloader, hidePreloader } from '../../shared/preloader';
+
+window.onload = function () {
+  let preloader = document.getElementById('preloader');
+  preloader.classList.add('hide-preloader');
+  setInterval(function () {
+    preloader.classList.add('preloader-hidden');
+  }, 990);
+};
 
 export const signUpHandler = () => {
   const signUpForm = document.querySelector('.sign-up__form');
@@ -28,32 +37,35 @@ export const signUpHandler = () => {
   const userNameInput = document.getElementById('userName');
   const userSurnameInput = document.getElementById('userSurname');
   const birthInput = document.getElementById('birth');
+  const preloader = document.getElementById('preloader');
 
   const formFields = {
     userName: {
-      isValid: false
+      isValid: false,
     },
     surname: {
-      isValid: false
+      isValid: false,
     },
     birth: {
-      isValid: true
+      isValid: true,
     },
     email: {
-      isValid: false
+      isValid: false,
     },
     password_1: {
-      isValid: false
+      isValid: false,
     },
     password_2: {
-      isValid: false
-    }
-  }
+      isValid: false,
+    },
+  };
 
   signUpBtn.setAttribute('disabled', true);
+  signUpBtn.addEventListener('click', () => {
+    preloader.style.display = 'block';
+  });
 
-
-  signUpForm.addEventListener('submit', event => {
+  signUpForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
     const user = {
@@ -61,8 +73,8 @@ export const signUpHandler = () => {
       lastName: userSurnameInput.value,
       email: emailInput.value,
       birth: birthInput.value,
-      password: password_1.value
-    }
+      password: password_1.value,
+    };
 
     signUp(user);
   });
@@ -77,7 +89,7 @@ export const signUpHandler = () => {
     // }
 
     checkFormValid();
-  }
+  };
 
   userNameInput.oninput = () => {
     if (nameValidator(userNameInput.value)) {
@@ -90,11 +102,13 @@ export const signUpHandler = () => {
     }
 
     checkFormValid();
-  }
+  };
 
   userNameInput.onblur = () => {
-    !nameValidator(userNameInput.value) ? showUserNameError() : hideUserNameError();
-  }
+    !nameValidator(userNameInput.value)
+      ? showUserNameError()
+      : hideUserNameError();
+  };
 
   userSurnameInput.oninput = () => {
     if (nameValidator(userSurnameInput.value)) {
@@ -107,11 +121,13 @@ export const signUpHandler = () => {
     }
 
     checkFormValid();
-  }
+  };
 
   userSurnameInput.onblur = () => {
-    !nameValidator(userSurnameInput.value) ? showUserSurnameError() : hideUserSurnameError();
-  }
+    !nameValidator(userSurnameInput.value)
+      ? showUserSurnameError()
+      : hideUserSurnameError();
+  };
 
   emailInput.oninput = () => {
     if (emailValidator(emailInput.value)) {
@@ -124,33 +140,45 @@ export const signUpHandler = () => {
     }
 
     checkFormValid();
-  }
+  };
 
   emailInput.onblur = () => {
-    !emailValidator(emailInput.value) ? showEmailErrorMessage() : hideEmailErrorMessage();
-  }
+    !emailValidator(emailInput.value)
+      ? showEmailErrorMessage()
+      : hideEmailErrorMessage();
+  };
 
   password_1.oninput = () => {
-    formFields.password_1.isValid = passwordStrengthController(password_1.value);
+    formFields.password_1.isValid = passwordStrengthController(
+      password_1.value
+    );
     checkFormValid();
-  }
+  };
 
   password_2.oninput = () => {
-    if (formFields.password_1.isValid && (password_1.value === password_2.value)) {
+    if (
+      formFields.password_1.isValid &&
+      password_1.value === password_2.value
+    ) {
       formFields.password_2.isValid = true;
       hidePasswordCompareError();
     } else formFields.password_2.isValid = false;
 
     checkFormValid();
-  }
+  };
 
   password_2.onblur = () => {
-    password_1.value !== password_2.value ? showPasswordCompareError() : hidePasswordCompareError();
-  }
+    password_1.value !== password_2.value
+      ? showPasswordCompareError()
+      : hidePasswordCompareError();
+  };
 
   const checkFormValid = () => {
-    const isFormValid = Object.values(formFields).every( value => value.isValid);
-    isFormValid ? signUpBtn.removeAttribute('disabled') : signUpBtn.setAttribute('disabled', true);
-  }
-
-}
+    const isFormValid = Object.values(formFields).every(
+      (value) => value.isValid
+    );
+    isFormValid
+      ? signUpBtn.removeAttribute('disabled')
+      : signUpBtn.setAttribute('disabled', true);
+  };
+};
