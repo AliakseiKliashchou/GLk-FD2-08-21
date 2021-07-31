@@ -6,6 +6,7 @@ import { FIREBASE_CONFIG, databaseURL, authUrl } from './api-config.js';
 import { showErrorNotification } from '../shared/error-handlers';
 import { setUID, getUID, setToken } from '../shared/ls-service';
 import { routes } from '../shared/constants/routes';
+import { showSpinner, hideSpinner } from '../shared/spinner/spinner.js';
 
 const headers = {
   'Content-Type': 'application/json'
@@ -87,11 +88,14 @@ export const signUp = async user => {
   const { password, email } = user;
 
   try {
+    await showSpinner();
     await createAuthData(email, password);
     await createUser(user);
     await signIn(email, password);
+    hideSpinner();
   } catch (error) {
     showErrorNotification(error);
+    hideSpinner();
   }
 }
 
