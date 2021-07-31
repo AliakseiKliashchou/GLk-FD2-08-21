@@ -76,7 +76,13 @@ export const signUpHandler = () => {
       password: password_1.value,
     };
 
-    signUp(user);
+    signUp(user).then((response) => {
+      if (response) {
+        preloader.style.display = 'none';
+      } else {
+        preloader.style.display = 'none';
+      }
+    });
   });
 
   birthInput.oninput = () => {
