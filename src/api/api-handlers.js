@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { FIREBASE_CONFIG, databaseURL, authUrl } from './api-config.js';
 import { showErrorNotification } from '../shared/error-handlers';
-import { setUID, getUID, setToken } from '../shared/ls-service';
+import { LocalStorageService } from '../shared/ls-service';
 import { routes } from '../shared/constants/routes';
 
 const headers = {
@@ -43,8 +43,32 @@ export const getPosts = () => {
         id: key
       }));
       return transformedPostsArray;
-    });
+    })
+    .catch( err => console.log(err));
 }
+
+export const getUser = () => {
+  return axios.get(`${databaseURL}/users.json`)
+    .then( response => {
+      if (response) {
+        const transformedUsers = 
+          Object.keys(response.data).map( key => ({...response.data[key], id: key}));
+        const user = transformedUsers.find( user => user.uuid === LocalStorageService.getUID());
+        LocalStorageService.setPersonalData(user);
+      }
+    })
+}
+
+export const getUserById = id => axios.get(`${databaseURL}/users/${id}.json`);
+
+export const getUsers = () => {
+  return axios.get(`${databaseURL}/users.json`)
+    .then( response => {
+      if (response) {
+        return Object.keys(response.data).map( key => ({...response.data[key], id: key}));
+      }
+    });
+}; 
 
 export const signIn = (email, password) => {
   return axios.post(authUrl, {
@@ -54,9 +78,10 @@ export const signIn = (email, password) => {
   })
     .then(response => {
       if (response) {
-        const { idToken: token } = response.data;
-        setToken(token);
-        window.location.href = routes.home;
+        const { idToken: token, localId } = response.data;
+        LocalStorageService.setToken(token);
+        LocalStorageService.setUID(localId);
+        getUser().then( () => window.location.href = routes.home);
       }
     });
 }
@@ -67,7 +92,7 @@ export const createAuthData = (email, password) => {
     .createUserWithEmailAndPassword(email, password)
     .then( response => {
       const { uid } = response.user;      
-      setUID(uid);      
+      LocalStorageService.setUID(uid);      
     });
 }
 
@@ -79,7 +104,7 @@ export const createUser = user => {
     lastName,
     birth,
     email,
-    uuid: getUID()
+    uuid: LocalStorageService.getUID()
   });
 }
 
@@ -88,7 +113,7 @@ export const signUp = async user => {
 
   try {
     await createAuthData(email, password);
-    await createUser(user);
+    await createUser(user).then( response => LocalStorageService.setUserId(response.data.name));
     await signIn(email, password);
   } catch (error) {
     showErrorNotification(error);

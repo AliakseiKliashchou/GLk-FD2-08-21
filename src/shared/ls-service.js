@@ -1,19 +1,37 @@
-export const getToken = () => localStorage.getItem('token');
+export class LocalStorageService {
+  static getToken() {
+    return localStorage.getItem('token');
+  }
 
-export const setToken = token => localStorage.setItem('token', token);
+  static setToken(token) {
+    localStorage.setItem('token', token);
+  }
 
-export const removeToken = () => localStorage.removeItem('token');
+  static setPersonalData(user) {
+    localStorage.setItem('personalData', JSON.stringify(user));
+  }
 
-export const getUserEmail = () => localStorage.getItem('userEmail');
+  static getPersonalData() {
+    return JSON.parse(localStorage.getItem('personalData'));
+  }
 
-export const setUserEmail = email => localStorage.setItem('userEmail', email);
+  static getUID() {
+    return localStorage.getItem('uid');
+  }
 
-export const removeUserEmail = () => localStorage.removeItem('userEmail');
+  static setUID(id) {
+    localStorage.setItem('uid', id);
+  }
+  
+  static getUserId() {
+    return localStorage.getItem('userId');
+  }
 
-export const getUID = () => localStorage.getItem('uid');
+  static setUserId(id) {
+    localStorage.setItem('userId', id);
+  } 
 
-export const setUID = id => localStorage.setItem('uid', id);
-
-export const removeUID = () => localStorage.removeItem('uid');
-
-export const clearStorage = () => localStorage.clear();
+  static clearStorage() {
+    localStorage.clear();
+  }
+}

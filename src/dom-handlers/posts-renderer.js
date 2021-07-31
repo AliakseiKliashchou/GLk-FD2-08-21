@@ -1,36 +1,44 @@
 import moment from 'moment';
-import { v4 as uuidv4 } from 'uuid';
 
-import { getPosts, createPost } from '../api/api-handlers';
+import { getPosts, createPost, getUsers } from '../api/api-handlers';
+import { LocalStorageService } from '../shared/ls-service';
 
-export const renderPosts = () => {
-  getPosts()
-    .then( posts => {
-      const postsContainer = document.querySelector('.main-content__posts');
-      postsContainer.innerHTML = null;
+export const renderPosts = async () => {
+  const postsContainer = document.querySelector('.main-content__posts');
+  let posts;
+  let users;
 
-      posts.forEach( item => {
-        const post = document.createElement('div');
-        const title = document.createElement('h5');
-        const content = document.createElement('p');
-        const userName = document.createElement('span');
-        const postDate = document.createElement('span');
+  postsContainer.innerHTML = null;
 
-        post.className = 'main-content__posts-post';
-        title.className = 'main-content__posts-post-title';
-        content.className = 'main-content__posts-post-content';
-        userName.className = 'main-content__posts-post-bottom-info';
-        postDate.className = 'main-content__posts-post-bottom-info';
+  await getPosts().then( response => posts = response );
+  await getUsers().then( response => users = response );
+  
+  posts.forEach( post => {
+    const user = users.find(user => user.id === post.userId);
+    console.log(user);
+    const postBlock = document.createElement('div');
+    const title = document.createElement('h5');
+    const content = document.createElement('p');
+    const userName = document.createElement('span');
+    const postDate = document.createElement('span');
 
-        title.innerHTML = item.title;
-        content.innerHTML = item.content;
-        userName.innerHTML = `${item.name}, `;
-        postDate.innerHTML = moment(item.date).format('MMM Do YY');
+    postBlock.className = 'main-content__posts-post';
+    title.className = 'main-content__posts-post-title';
+    content.className = 'main-content__posts-post-content';
+    userName.className = 'main-content__posts-post-bottom-info';
+    postDate.className = 'main-content__posts-post-bottom-info';
 
-        post.append(title, content, userName, postDate);
-        postsContainer.append(post);
-      });
-    });
+    if (user.uuid !== LocalStorageService.getUID()) {
+      postBlock.classList.add('other-user');
+    }
+
+    title.innerHTML = post.title;
+    content.innerHTML = post.content;
+    userName.innerHTML = `${user.firstName} ${user.lastName}, `;
+    postDate.innerHTML = moment(post.date).format('MMM Do YY');
+    postBlock.append(title, content, userName, postDate);
+    postsContainer.append(postBlock);
+  });
 }
 
 export const postFormHandler = () => {
@@ -39,9 +47,7 @@ export const postFormHandler = () => {
   const post_content = document.getElementById('post_content');
 
   const post = {
-    userId: uuidv4(),
-    name: 'Alex',
-    email: 'test@mail.com',
+    userId: LocalStorageService.getPersonalData().id,
     date: moment().format(),
     title: null,
     content: null

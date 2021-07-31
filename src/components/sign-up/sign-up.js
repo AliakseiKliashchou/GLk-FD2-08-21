@@ -6,18 +6,8 @@ import {
   nameValidator,
   birthdateValidator
 } from '../../shared/validators';
-import { 
-  showPasswordCompareError, 
-  hidePasswordCompareError,
-  hideEmailErrorMessage,
-  showEmailErrorMessage,
-  showUserNameError,
-  hideUserNameError,
-  showUserSurnameError,
-  hideUserSurnameError,
-  showBirthdateError,
-  hideBirthdateError
-} from '../../shared/error-handlers';
+import { showErrorMessage, hideErrorMessage } from '../../shared/error-handlers';
+import { ERROR_MESSAGES } from '../../shared/constants/error-messages';
 
 export const signUpHandler = () => {
   const signUpForm = document.querySelector('.sign-up__form');
@@ -70,10 +60,10 @@ export const signUpHandler = () => {
   birthInput.oninput = () => {
     // if (birthdateValidator(birthInput.value)) {
     //   formFields.birth.isValid = true;
-    //   hideBirthdateError();
+    //   hideErrorMessage('birtdateError');
     // } else {
     //   formFields.birth.isValid = false;
-    //   showBirthdateError();
+    //   showErrorMessage('birtdateError', ERROR_MESSAGES.birth);
     // }
 
     checkFormValid();
@@ -83,7 +73,7 @@ export const signUpHandler = () => {
     if (nameValidator(userNameInput.value)) {
       formFields.userName.isValid = true;
       userNameInput.classList.remove('invalid');
-      hideUserNameError();
+      hideErrorMessage('userNameError');
     } else {
       formFields.userName.isValid = false;
       userNameInput.classList.add('invalid');
@@ -93,14 +83,16 @@ export const signUpHandler = () => {
   }
 
   userNameInput.onblur = () => {
-    !nameValidator(userNameInput.value) ? showUserNameError() : hideUserNameError();
+    !nameValidator(userNameInput.value) ? 
+      showErrorMessage('userNameError', ERROR_MESSAGES.userName) : 
+      hideErrorMessage('userNameError');
   }
 
   userSurnameInput.oninput = () => {
     if (nameValidator(userSurnameInput.value)) {
       formFields.surname.isValid = true;
       userSurnameInput.classList.remove('invalid');
-      hideUserSurnameError();
+      hideErrorMessage('userSurnameError');
     } else {
       formFields.surname.isValid = false;
       userSurnameInput.classList.add('invalid');
@@ -110,13 +102,15 @@ export const signUpHandler = () => {
   }
 
   userSurnameInput.onblur = () => {
-    !nameValidator(userSurnameInput.value) ? showUserSurnameError() : hideUserSurnameError();
+    !nameValidator(userSurnameInput.value) ? 
+      showErrorMessage('userSurnameError', ERROR_MESSAGES.userSurname) : 
+      hideErrorMessage('userSurnameError');
   }
 
   emailInput.oninput = () => {
     if (emailValidator(emailInput.value)) {
       formFields.email.isValid = true;
-      hideEmailErrorMessage();
+      hideErrorMessage('emailError');
       emailInput.classList.remove('invalid');
     } else {
       formFields.email.isValid = false;
@@ -127,7 +121,9 @@ export const signUpHandler = () => {
   }
 
   emailInput.onblur = () => {
-    !emailValidator(emailInput.value) ? showEmailErrorMessage() : hideEmailErrorMessage();
+    !emailValidator(emailInput.value) ? 
+      showErrorMessage('emailError', ERROR_MESSAGES.email) : 
+      hideErrorMessage('emailError');
   }
 
   password_1.oninput = () => {
@@ -138,14 +134,16 @@ export const signUpHandler = () => {
   password_2.oninput = () => {
     if (formFields.password_1.isValid && (password_1.value === password_2.value)) {
       formFields.password_2.isValid = true;
-      hidePasswordCompareError();
+      hideErrorMessage('passwordsCompareError');
     } else formFields.password_2.isValid = false;
 
     checkFormValid();
   }
 
   password_2.onblur = () => {
-    password_1.value !== password_2.value ? showPasswordCompareError() : hidePasswordCompareError();
+    password_1.value !== password_2.value ? 
+    showErrorMessage('passwordsCompareError', ERROR_MESSAGES.passwordsCompare) : 
+    hideErrorMessage('passwordsCompareError');
   }
 
   const checkFormValid = () => {
