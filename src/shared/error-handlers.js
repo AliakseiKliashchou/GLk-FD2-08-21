@@ -1,24 +1,11 @@
-import { ERROR_MESSAGES } from '../shared/constants/error-messages';
-
-export const showPasswordLengthErrorMessage = () => {
-  const errorTag = document.getElementById('passwordLengthError');
+export const showErrorMessage = (id, message) => {
+  const errorTag = document.getElementById(id);
   errorTag.style.display = 'block';
-  errorTag.innerText = ERROR_MESSAGES.password_length;
+  errorTag.innerText = message;
 }
 
-export const hidePasswordLengthErrorMessage = () => {
-  const inputErrorTag = document.getElementById('passwordLengthError');
-  inputErrorTag.style.display = 'none';
-}
-
-export const showEmailErrorMessage = () => {
-  const errorTag = document.getElementById('emailError');
-  errorTag.style.display = 'block';
-  errorTag.innerText = ERROR_MESSAGES.email;
-}
-
-export const hideEmailErrorMessage = () => {
-  const inputErrorTag = document.getElementById('emailError');
+export const hideErrorMessage = id => {
+  const inputErrorTag = document.getElementById(id);
   inputErrorTag.style.display = 'none';
 }
 
@@ -29,59 +16,4 @@ export const showErrorNotification = error => {
   notification.className = 'error-notification';
   body.append(notification);
   setTimeout( () => notification.style.display = 'none', 5000);
-}
-
-export const showPasswordCompareError = () => {
-  const errorTag = document.getElementById('passwordsCompareError');
-  errorTag.style.display = 'block';
-  errorTag.innerText = ERROR_MESSAGES.passwordsCompare;
-}
-
-export const hidePasswordCompareError = () => {
-  const errorTag = document.getElementById('passwordsCompareError');
-  errorTag.style.display = 'none';
-}
-
-export const showUserNameError = () => {
-  const errorTag = document.getElementById('userNameError');
-  errorTag.style.display = 'block';
-  errorTag.innerText = ERROR_MESSAGES.userName;
-}
-
-export const hideUserNameError = () => {
-  const errorTag = document.getElementById('userNameError');
-  errorTag.style.display = 'none';
-}
-
-export const showUserSurnameError = () => {
-  const errorTag = document.getElementById('userSurnameError');
-  errorTag.style.display = 'block';
-  errorTag.innerText = ERROR_MESSAGES.userSurname;
-}
-
-export const hideUserSurnameError = () => {
-  const errorTag = document.getElementById('userSurnameError');
-  errorTag.style.display = 'none';
-}
-
-export const showBirthdateError = () => {
-  const errorTag = document.getElementById('birtdateError');
-  errorTag.style.display = 'block';
-  errorTag.innerText = ERROR_MESSAGES.birth;
-}
-
-export const hideBirthdateError = () => {
-  const errorTag = document.getElementById('birtdateError');
-  errorTag.style.display = 'none';
-}
-
-export const showRecoverEmailError = () => {
-  const errorTag = document.getElementById('recoverEmailError');
-  errorTag.style.display = 'block';
-  errorTag.innerText = ERROR_MESSAGES.email;
-}
-
-export const hideRecoverEmailError = () => {
-  const errorTag = document.getElementById('recoverEmailError');
-  errorTag.style.display = 'none';
 }

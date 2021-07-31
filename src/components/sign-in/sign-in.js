@@ -1,14 +1,11 @@
 import { signIn, passwordRecovery } from '../../api/api-handlers';
 import { passwordLengthValidator, emailValidator } from '../../shared/validators';
-import {
-  showPasswordLengthErrorMessage,
-  hidePasswordLengthErrorMessage,
-  showEmailErrorMessage,
-  hideEmailErrorMessage,
+import { 
   showErrorNotification,
-  showRecoverEmailError,
-  hideRecoverEmailError
+  showErrorMessage,
+  hideErrorMessage
 } from '../../shared/error-handlers';
+import { ERROR_MESSAGES } from '../../shared/constants/error-messages';
 
 export const signInHandler = () => {
   const signInForm = document.querySelector('.sign-in__form');
@@ -41,7 +38,7 @@ export const signInHandler = () => {
   passwordInput.oninput = () => {
     if (passwordLengthValidator(passwordInput.value)) {
       formFields.password.isValid = true;
-      hidePasswordLengthErrorMessage();
+      hideErrorMessage('passwordLengthError');
       passwordInput.classList.remove('invalid');
     } else {
       formFields.password.isValid = false;
@@ -54,14 +51,14 @@ export const signInHandler = () => {
 
   passwordInput.onblur = () => {
     !passwordLengthValidator(passwordInput.value) ?
-      showPasswordLengthErrorMessage() :
-      hidePasswordLengthErrorMessage();
+      showErrorMessage('passwordLengthError', ERROR_MESSAGES.password_length) :
+      hideErrorMessage('passwordLengthError');
   }
 
   emailInput.oninput = () => {
     if (emailValidator(emailInput.value)) {
       formFields.email.isValid = true;
-      hideEmailErrorMessage();
+      hideErrorMessage('emailError');
       emailInput.classList.remove('invalid');
     } else {
       formFields.email.isValid = false;
@@ -72,12 +69,14 @@ export const signInHandler = () => {
   }
 
   emailInput.onblur = () => {
-    !emailValidator(emailInput.value) ? showEmailErrorMessage() : hideEmailErrorMessage();
+    !emailValidator(emailInput.value) ? 
+      showErrorMessage('emailError', ERROR_MESSAGES.email) : 
+      hideErrorMessage('emailError');
   }
 
   recoverEmailInput.oninput = () => {
     if (emailValidator(recoverEmailInput.value)) {
-      hideRecoverEmailError();
+      hideErrorMessage('recoverEmailError');
       recoverEmailInput.classList.remove('invalid');
       recoverBtn.removeAttribute('disabled');
     } else {
@@ -87,7 +86,9 @@ export const signInHandler = () => {
   }
 
   recoverEmailInput.onblur = () => {
-    !emailValidator(recoverEmailInput.value) ? showRecoverEmailError() : hideRecoverEmailError();
+    !emailValidator(recoverEmailInput.value) ? 
+      showErrorMessage('recoverEmailError', ERROR_MESSAGES.email) : 
+      hideErrorMessage('recoverEmailError');
   }
 
   recoverBtn.onclick = () => {

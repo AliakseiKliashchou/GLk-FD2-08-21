@@ -1,7 +1,7 @@
 import { renderPosts, postFormHandler } from './dom-handlers/posts-renderer';
 import { routes, paths } from './shared/constants/routes';
 import { signInHandler } from './components/sign-in/sign-in';
-import { getToken } from './shared/ls-service';
+import { LocalStorageService } from './shared/ls-service';
 import { logoutBtnHandler } from './components/profile/profile';
 import { signUpHandler } from './components/sign-up/sign-up';
 import './styles/styles.scss';
@@ -13,7 +13,7 @@ window.onload = () => {
   switch (pathname) {
     case paths.home:
 
-    const token = getToken();
+    const token = LocalStorageService.getToken();
 
     if (!token) {
       window.location.href = routes.sign_in;
