@@ -6,6 +6,7 @@ import { FIREBASE_CONFIG, databaseURL, authUrl } from './api-config.js';
 import { showErrorNotification } from '../shared/error-handlers';
 import { LocalStorageService } from '../shared/ls-service';
 import { routes } from '../shared/constants/routes';
+import { openBlockSpinner, closedBlockSpinner } from '../components/profile/profile.js';
 
 const headers = {
   'Content-Type': 'application/json'
@@ -112,10 +113,13 @@ export const signUp = async user => {
   const { password, email } = user;
 
   try {
+    await openBlockSpinner();
     await createAuthData(email, password);
     await createUser(user).then( response => LocalStorageService.setUserId(response.data.name));
     await signIn(email, password);
+    closedBlockSpinner();
   } catch (error) {
+    closedBlockSpinner();
     showErrorNotification(error);
   }
 }
