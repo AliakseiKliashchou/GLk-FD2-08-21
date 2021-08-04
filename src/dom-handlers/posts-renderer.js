@@ -2,20 +2,22 @@ import moment from 'moment';
 
 import { getPosts, createPost, getUsers } from '../api/api-handlers';
 import { LocalStorageService } from '../shared/ls-service';
+import { setUserInfo } from '../shared/helpers';
 
 export const renderPosts = async () => {
   const postsContainer = document.querySelector('.main-content__posts');
   let posts;
   let users;
-
+  
   postsContainer.innerHTML = null;
+  
+  setUserInfo();
 
   await getPosts().then( response => posts = response );
   await getUsers().then( response => users = response );
   
   posts.forEach( post => {
     const user = users.find(user => user.id === post.userId);
-    console.log(user);
     const postBlock = document.createElement('div');
     const title = document.createElement('h5');
     const content = document.createElement('p');

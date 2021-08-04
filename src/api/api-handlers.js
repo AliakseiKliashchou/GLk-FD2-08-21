@@ -1,11 +1,14 @@
 require('firebase/auth');
 import firebase from 'firebase/app';
+import 'firebase/storage';
 import axios from 'axios';
 
 import { FIREBASE_CONFIG, databaseURL, authUrl } from './api-config.js';
 import { showErrorNotification } from '../shared/error-handlers';
 import { LocalStorageService } from '../shared/ls-service';
 import { routes } from '../shared/constants/routes';
+import { setUserInfo } from '../shared/helpers';
+import { refreshFormFoto } from '../components/profile/profile';
 
 const headers = {
   'Content-Type': 'application/json'
@@ -126,11 +129,31 @@ export const passwordRecovery = email => {
     .catch( error => showErrorNotification(error));
 }
 
-initApi();
+export const uploadPhoto = async (event, imgName) => {
+  const user = LocalStorageService.getPersonalData();
 
-{/* <p>Hello,</p>
-<p>Follow this link to reset your %APP_NAME% password for your %EMAIL% account.</p>
-<p><a href='%LINK%'>%LINK%</a></p>
-<p>If you didn’t ask to reset your password, you can ignore this email.</p>
-<p>Thanks,</p>
-<p>Your %APP_NAME% team</p> */}
+  await firebase
+    .storage()
+    .ref(`photos/${imgName}`)
+    .put(event.target.files[0])
+    .catch( error => showErrorNotification(error));
+  await firebase
+    .storage()
+    .ref(`photos/${imgName}`)
+    .getDownloadURL()
+    .then( url => user.photo = url)
+    .catch( error => showErrorNotification(error));
+  
+  await updateUser(user).then( () => refreshFormFoto());
+
+  await firebase.storage().ref(`photos/${imgName}`).delete
+}
+
+export const updateUser = async user => 
+  axios.put(`${databaseURL}/users/${user.id}.json`, user)
+    .then(() => {
+      LocalStorageService.setPersonalData(user);
+      setUserInfo();
+    });
+
+initApi();
