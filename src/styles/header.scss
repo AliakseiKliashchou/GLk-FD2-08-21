@@ -1,7 +1,7 @@
 @import './colors.scss';
 
 .header {
-  height: 10vh;
+  // height: 10vh;
   background-color: $primary;
   display: flex;
   align-items: center;
@@ -16,6 +16,7 @@
 
   &__profile {
     display: flex;
+    margin: 5px 0;
 
     &-photo {
       width: 60px;
@@ -23,9 +24,9 @@
       border-radius: 50%;
       border: 2px solid rgb(216, 211, 211);
       margin-right: 20px;
-      // background-image: url('/src/shared/assets/img/ava.png');
       background-repeat: no-repeat;
       background-size: cover;
+      background-position: center;
     }
 
     // &-email {

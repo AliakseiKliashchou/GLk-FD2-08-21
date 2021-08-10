@@ -5,7 +5,8 @@ export const setUserInfo = () => {
   const dropdownMenuButton = document.getElementById('dropdownMenuButton');
   const userFullName = 
     `${LocalStorageService.getPersonalData().firstName} ${LocalStorageService.getPersonalData().lastName}`;
-
-  photo.style.backgroundImage = `url("${LocalStorageService.getPersonalData().photo}")`;
+  const userPhotoUrl = LocalStorageService.getPersonalData().photo;
+  photo.style.backgroundImage = userPhotoUrl ?
+    `url("${userPhotoUrl}")` : `url("/src/shared/assets/img/no-photo.png")`;
   dropdownMenuButton.innerText = userFullName;
 }

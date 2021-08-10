@@ -43,11 +43,14 @@ export const formHandler = () => {
     event.preventDefault();
   })
 
-  refreshFormFoto();
+  refreshFormPhoto();
 
 }
 
-export const refreshFormFoto = () => {
+export const refreshFormPhoto = () => {
   const photoBlock = document.querySelector('.profile__form-photo-img');
-  photoBlock.style.backgroundImage = `url("${LocalStorageService.getPersonalData().photo}")`;
+  const userPhotoUrl = LocalStorageService.getPersonalData().photo;
+
+  photoBlock.style.backgroundImage = userPhotoUrl ?
+    `url("${userPhotoUrl}")` : `url("/src/shared/assets/img/no-photo.png")`;
 }

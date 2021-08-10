@@ -8,14 +8,14 @@ export const renderPosts = async () => {
   const postsContainer = document.querySelector('.main-content__posts');
   let posts;
   let users;
-  
+
   postsContainer.innerHTML = null;
-  
+
   setUserInfo();
 
   await getPosts().then( response => posts = response );
   await getUsers().then( response => users = response );
-  
+
   posts.forEach( post => {
     const user = users.find(user => user.id === post.userId);
     const postBlock = document.createElement('div');
