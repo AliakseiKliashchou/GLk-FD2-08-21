@@ -9,6 +9,8 @@ export const FIREBASE_CONFIG = {
   measurementId: "G-48QGH55PZC"
 }
 
+
+
 export const databaseURL = "https://dimade7859-test-default-rtdb.firebaseio.com/";
 
 export const authUrl = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_CONFIG.apiKey}`;
