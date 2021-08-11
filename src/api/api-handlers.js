@@ -3,14 +3,14 @@ import firebase from 'firebase/app';
 import 'firebase/storage';
 import axios from 'axios';
 
-import { FIREBASE_CONFIG, databaseURL, authUrl } from './api-config.js';
-import { showNotification } from '../shared/notifications';
+
+import { FIREBASE_CONFIG, databaseURL, authURL } from './api-config.js';
+import { showErrorNotification } from '../shared/error-handlers';
 import { LocalStorageService } from '../shared/ls-service';
 import { routes } from '../shared/constants/routes';
 import { setUserInfo } from '../shared/helpers';
-import { refreshFormPhoto } from '../components/profile/profile';
-import { hideSpinner, showSpinner } from '../shared/components/spinner/spinner.js';
-import { NOTIFICATION } from '../shared/constants/common.js';
+import { refreshNewPhoto } from '../components/profile/profile';
+
 
 const headers = {
   'Content-Type': 'application/json'
@@ -96,9 +96,8 @@ export const getUsers = () => {
 }; 
 
 export const signIn = (email, password) => {
-  showSpinner();
+  return axios.post(authURL, {
 
-  return axios.post(authUrl, {
     email,
     password,
     returnSecureToken: true
@@ -170,55 +169,28 @@ export const passwordRecovery = email => {
     });
 }
 
-export const uploadPhoto = async (event, imgName) => {
+export const uploadPhoto = async (event, img_name) => {
+  // const ex = event.target.files[0].name.split('.').slice(-1).join();
   const user = LocalStorageService.getPersonalData();
-  showSpinner();
 
-  await firebase
-    .storage()
-    .ref(`photos/${imgName}`)
+  await firebase.storage()
+    .ref(`photos/${img_name}`)
     .put(event.target.files[0])
-    .catch( error => {
-      showNotification(error, false);
-      hideSpinner();
-    });
-  await firebase
-    .storage()
-    .ref(`photos/${imgName}`)
+    .catch( error => showErrorNotification(error));
+    // .then( snapshot => console.log(snapshot));
+
+  await firebase.storage()
+    .ref(`photos/${img_name}`)
     .getDownloadURL()
     .then( url => user.photo = url)
-    .catch( error => {
-      showNotification(error, false);
-      hideSpinner();
-    });
-
-  await updateUser(user)
-    .then( () => refreshFormPhoto())
-    .catch( error => {
-      showNotification(error, false);
-      hideSpinner();
-    });
-
-  setTimeout(() => {
-    hideSpinner();
-    showNotification( NOTIFICATION.upload_successful, true);
-  }, 1000);
+    .catch( error => showErrorNotification(error));
+  await updateUser(user).then( () => refreshNewPhoto());
 }
 
-export const updateUser = async user => {
-  showSpinner();
 
+export const updateUser = async (user) => {
   axios.put(`${databaseURL}/users/${user.id}.json`, user)
-    .then(() => {
-      LocalStorageService.setPersonalData(user);
-      setUserInfo();
-      hideSpinner();
-      showNotification(NOTIFICATION.update_user, true);
-    })
-    .catch( error => {
-      hideSpinner();
-      showNotification(error, false);
-    });
-  }
+    .then( () => LocalStorageService.setPersonalData(user))
+}
 
 initApi();
