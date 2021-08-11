@@ -2,6 +2,8 @@ import moment from 'moment';
 
 import { getPosts, createPost, getUsers } from '../api/api-handlers';
 import { LocalStorageService } from '../shared/ls-service';
+import { setUserInfo } from '../shared/helpers';
+
 
 export const renderPosts = async () => {
   const postsContainer = document.querySelector('.main-content__posts');
@@ -9,6 +11,8 @@ export const renderPosts = async () => {
   let users;
 
   postsContainer.innerHTML = null;
+
+  setUserInfo();
 
   await getPosts().then( response => posts = response );
   await getUsers().then( response => users = response );

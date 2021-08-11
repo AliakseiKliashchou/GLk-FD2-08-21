@@ -1,11 +1,14 @@
 require('firebase/auth');
 import firebase from 'firebase/app';
+import 'firebase/storage';
 import axios from 'axios';
 
-import { FIREBASE_CONFIG, databaseURL, authUrl } from './api-config.js';
+import { FIREBASE_CONFIG, databaseURL, authURL } from './api-config.js';
 import { showErrorNotification } from '../shared/error-handlers';
 import { LocalStorageService } from '../shared/ls-service';
 import { routes } from '../shared/constants/routes';
+import { setUserInfo } from '../shared/helpers';
+import { refreshNewPhoto } from '../components/profile/profile';
 
 const headers = {
   'Content-Type': 'application/json'
@@ -71,7 +74,7 @@ export const getUsers = () => {
 }; 
 
 export const signIn = (email, password) => {
-  return axios.post(authUrl, {
+  return axios.post(authURL, {
     email,
     password,
     returnSecureToken: true
@@ -126,11 +129,30 @@ export const passwordRecovery = email => {
     .catch( error => showErrorNotification(error));
 }
 
+export const uploadPhoto = async (event, img_name) => {
+  // const ex = event.target.files[0].name.split('.').slice(-1).join();
+  const user = LocalStorageService.getPersonalData();
+
+  await firebase.storage()
+    .ref(`photos/${img_name}`)
+    .put(event.target.files[0])
+    .catch( error => showErrorNotification(error));
+    // .then( snapshot => console.log(snapshot));
+
+  await firebase.storage()
+    .ref(`photos/${img_name}`)
+    .getDownloadURL()
+    .then( url => user.photo = url)
+    .catch( error => showErrorNotification(error));
+  await updateUser(user).then( () => refreshNewPhoto());
+}
+
+
+export const updateUser = async (user) => {
+  axios.put(`${databaseURL}/users/${user.id}.json`, user)
+    .then( () => LocalStorageService.setPersonalData(user))
+}
+
 initApi();
 
-{/* <p>Hello,</p>
-<p>Follow this link to reset your %APP_NAME% password for your %EMAIL% account.</p>
-<p><a href='%LINK%'>%LINK%</a></p>
-<p>If you didn’t ask to reset your password, you can ignore this email.</p>
-<p>Thanks,</p>
-<p>Your %APP_NAME% team</p> */}
+

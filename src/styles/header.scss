@@ -6,11 +6,37 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
 
-  // &__profile {
+  #home {
+    color: $no_bgc;
+    font-size: larger;
+    text-decoration: none;
+  }
 
-  // }
+  &__profile {
+
+    display: flex;
+
+    &-photo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 1px solid;
+      // background-image: url('../assets/ava.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    &-email {
+      display: flex;
+      align-items: center;
+    }
+
+    &-logout {
+      display: flex;
+      align-items: center;
+    }
+  }
 
   h1 {
     color: $no_bgc;
