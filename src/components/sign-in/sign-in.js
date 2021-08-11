@@ -1,10 +1,7 @@
 import { signIn, passwordRecovery } from '../../api/api-handlers';
 import { passwordLengthValidator, emailValidator } from '../../shared/validators';
-import { 
-  showErrorNotification,
-  showErrorMessage,
-  hideErrorMessage
-} from '../../shared/error-handlers';
+import { showErrorMessage, hideErrorMessage } from '../../shared/error-handlers';
+import { showNotification } from '../../shared/notifications';
 import { ERROR_MESSAGES } from '../../shared/constants/error-messages';
 
 export const signInHandler = () => {
@@ -32,7 +29,7 @@ export const signInHandler = () => {
     const email = emailInput.value;
     const password = passwordInput.value;
 
-    signIn(email, password).catch( error => showErrorNotification(error));
+    signIn(email, password).catch( error => showNotification(error, false));
   });
 
   passwordInput.oninput = () => {

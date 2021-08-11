@@ -3,12 +3,14 @@ import firebase from 'firebase/app';
 import 'firebase/storage';
 import axios from 'axios';
 
+
 import { FIREBASE_CONFIG, databaseURL, authURL } from './api-config.js';
 import { showErrorNotification } from '../shared/error-handlers';
 import { LocalStorageService } from '../shared/ls-service';
 import { routes } from '../shared/constants/routes';
 import { setUserInfo } from '../shared/helpers';
 import { refreshNewPhoto } from '../components/profile/profile';
+
 
 const headers = {
   'Content-Type': 'application/json'
@@ -20,6 +22,8 @@ export const initApi = () => {
 
 export const createPost = post => {
   const { userId, name, email, date, title, content } = post;
+  showSpinner();
+
   return fetch(`${databaseURL}/posts.json`,
     {
       method: 'POST',
@@ -34,10 +38,17 @@ export const createPost = post => {
       })
     }
 
-  );
+  )
+    .then( () => hideSpinner())
+    .catch( error => {
+      showNotification(error, false);
+      hideSpinner();
+    });
 }
 
 export const getPosts = () => {
+  showSpinner();
+
   return fetch(`${databaseURL}/posts.json`, { headers })
     .then( response => response.json())
     .then( result => {
@@ -45,16 +56,20 @@ export const getPosts = () => {
         ...result[key],
         id: key
       }));
+      hideSpinner();
       return transformedPostsArray;
     })
-    .catch( err => console.log(err));
+    .catch( error => {
+      hideSpinner();
+      showNotification(error, false);
+    });
 }
 
 export const getUser = () => {
   return axios.get(`${databaseURL}/users.json`)
     .then( response => {
       if (response) {
-        const transformedUsers = 
+        const transformedUsers =
           Object.keys(response.data).map( key => ({...response.data[key], id: key}));
         const user = transformedUsers.find( user => user.uuid === LocalStorageService.getUID());
         LocalStorageService.setPersonalData(user);
@@ -65,16 +80,24 @@ export const getUser = () => {
 export const getUserById = id => axios.get(`${databaseURL}/users/${id}.json`);
 
 export const getUsers = () => {
+  showSpinner();
+
   return axios.get(`${databaseURL}/users.json`)
     .then( response => {
       if (response) {
+        hideSpinner();
         return Object.keys(response.data).map( key => ({...response.data[key], id: key}));
       }
+    })
+    .catch( error => {
+      hideSpinner();
+      showNotification(error, false);
     });
 }; 
 
 export const signIn = (email, password) => {
   return axios.post(authURL, {
+
     email,
     password,
     returnSecureToken: true
@@ -84,8 +107,15 @@ export const signIn = (email, password) => {
         const { idToken: token, localId } = response.data;
         LocalStorageService.setToken(token);
         LocalStorageService.setUID(localId);
-        getUser().then( () => window.location.href = routes.home);
+        getUser().then( () => {
+          hideSpinner();
+          window.location.href = routes.home;
+        });
       }
+    })
+    .catch( error => {
+      hideSpinner();
+      showNotification(error, false);
     });
 }
 
@@ -113,20 +143,30 @@ export const createUser = user => {
 
 export const signUp = async user => {
   const { password, email } = user;
+  showSpinner();
 
   try {
     await createAuthData(email, password);
     await createUser(user).then( response => LocalStorageService.setUserId(response.data.name));
     await signIn(email, password);
+    hideSpinner();
   } catch (error) {
-    showErrorNotification(error);
+    hideSpinner();
+    showNotification(error, false);
   }
 }
 
 export const passwordRecovery = email => {
+  showSpinner();
   firebase.auth().sendPasswordResetEmail(email)
-    .then(() => window.location.href = routes.sign_in)
-    .catch( error => showErrorNotification(error));
+    .then(() => {
+      hideSpinner();
+      window.location.href = routes.sign_in;
+    })
+    .catch( error => {
+      hideSpinner();
+      showNotification(error, false);
+    });
 }
 
 export const uploadPhoto = async (event, img_name) => {
@@ -154,5 +194,3 @@ export const updateUser = async (user) => {
 }
 
 initApi();
-
-

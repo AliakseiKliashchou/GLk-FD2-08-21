@@ -1,10 +1,12 @@
-import {LocalStorageService } from '../shared/ls-service';
+import { LocalStorageService } from '../shared/ls-service';
 
 export const setUserInfo = () => {
-    const drpdownmenubutton = document.getElementById('dropdownMenuButton1');
-    const userfullname = `${LocalStorageService.getPersonalData().firstName}`;
-
-    const photo = document.querySelector('.header__profile-photo');
-    photo.style.backgroundImage = `url('${LocalStorageService.getPersonalData().photo}')`;
-    drpdownmenubutton.innerHTML = userfullname;
+  const photo = document.querySelector('.header__profile-photo');
+  const dropdownMenuButton = document.getElementById('dropdownMenuButton');
+  const userFullName = 
+    `${LocalStorageService.getPersonalData().firstName} ${LocalStorageService.getPersonalData().lastName}`;
+  const userPhotoUrl = LocalStorageService.getPersonalData().photo;
+  photo.style.backgroundImage = userPhotoUrl ?
+    `url("${userPhotoUrl}")` : `url("/src/shared/assets/img/no-photo.png")`;
+  dropdownMenuButton.innerText = userFullName;
 }

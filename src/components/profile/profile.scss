@@ -1,23 +1,21 @@
 .profile {
 
-    &__form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 20px;
+  width: 90%;
+  margin: 50px auto;
 
-        .mb-3 {
-            width: 50%;
-        }
-    }
-    &__form-photo {
-        display: flex;
+  &__form-photo {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 50px;    
 
-        &-img {
-            width: 200px;
-            height: 200px;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
+    &-img {
+      width: 200px;
+      height: 200px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
     }
+  }
+
 }
