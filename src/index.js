@@ -4,9 +4,7 @@ import { signInHandler } from './components/sign-in/sign-in';
 import { LocalStorageService } from './shared/ls-service';
 import { logoutBtnHandler } from './components/profile/profile';
 import { signUpHandler } from './components/sign-up/sign-up';
-
 import { profileHandler } from './components/profile/profile';
-
 import './styles/styles.scss';
 
 window.onload = () => {
@@ -33,7 +31,6 @@ window.onload = () => {
       break;
     case paths.profile:
       profileHandler();
-      break;
     default:
       break;
   }

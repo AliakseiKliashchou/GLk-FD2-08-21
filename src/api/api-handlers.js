@@ -10,6 +10,10 @@ import { LocalStorageService } from '../shared/ls-service';
 import { routes } from '../shared/constants/routes';
 import { setUserInfo } from '../shared/helpers';
 import { refreshNewPhoto } from '../components/profile/profile';
+import { showNotification } from '../shared/notifications';
+import { refreshFormPhoto } from '../components/profile/profile';
+import { hideSpinner, showSpinner } from '../shared/components/spinner/spinner.js';
+import { NOTIFICATION } from '../shared/constants/common.js';
 
 
 const headers = {

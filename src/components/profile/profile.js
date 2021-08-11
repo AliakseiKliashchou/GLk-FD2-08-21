@@ -14,7 +14,6 @@ export const logoutBtnHandler = () => {
 export const profileHandler = () => {
   const photo_input = document.getElementById('photo-input');
 
-
   setUserInfo();
   logoutBtnHandler();
   formHandler();
@@ -28,7 +27,6 @@ export const profileHandler = () => {
 
 export const formHandler = () => {
   const { firstName, lastName, email, birth } = LocalStorageService.getPersonalData();
-
   const userName = document.getElementById('userName');
   const userSurname = document.getElementById('userSurname');
   const emailInput = document.getElementById('email');

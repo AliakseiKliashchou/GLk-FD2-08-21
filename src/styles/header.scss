@@ -6,6 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 20px;
 
   #home {
     color: $no_bgc;
@@ -14,7 +15,6 @@
   }
 
   &__profile {
-
     display: flex;
     margin: 5px 0;
 
@@ -28,6 +28,16 @@
       background-size: cover;
       background-position: center;
     }
+
+    // &-email {
+    //   display: flex;
+    //   align-items: center;
+
+    //   p {
+    //     margin: 10px 10px;
+    //   }
+
+    // }
 
     &-logout {
       display: flex;
