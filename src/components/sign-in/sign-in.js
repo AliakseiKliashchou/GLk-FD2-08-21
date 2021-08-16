@@ -6,7 +6,7 @@ import { ERROR_MESSAGES } from '../../shared/constants/error-messages';
 
 export const signInHandler = () => {
 
-  console.log('LIYNGY<JFMJYKGLMGU:K');
+  console.log('LIYNGY<JFMJYKGLMGU:Kaergaer');
 
   const signInForm = document.querySelector('.sign-in__form');
   const signInBtn = document.getElementById('signInBtn');
