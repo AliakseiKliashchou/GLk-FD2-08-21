@@ -1,10 +1,16 @@
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.js',
+  // entry: './src/index.js',
+  entry: {
+    main: './src/index.js',
+    signIn: './src/components/sign-in/sign-in.js',
+    profile: './src/components/profile/profile.js'
+  },
   output: {
-    filename: 'bundle.[chunkhash].js',
+    filename: '[name].bundle.[chunkhash].js',
     path: path.resolve(__dirname, 'dist')
   },
   plugins: [
@@ -24,6 +30,7 @@ module.exports = {
       filename: 'profile.html',
       template: './src/components/profile/profile.html'
     }),
+    new CleanWebpackPlugin()
   ],
   module: {
     rules: [
@@ -45,6 +52,11 @@ module.exports = {
       {
         test: /\.(png|jpg|jpeg|gif|svg)$/,
         type: 'asset'
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
       }
     ]
   },

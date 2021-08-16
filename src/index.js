@@ -7,13 +7,20 @@ import { signUpHandler } from './components/sign-up/sign-up';
 import { profileHandler } from './components/profile/profile';
 import './styles/styles.scss';
 
+console.log('CHECJ')
+
 window.onload = () => {
 
+  console.log('CHECJ 2')
+
   const pathname = Object.values(paths).find( path => path === window.location.pathname );
+  console.log('path', window.location);
 
   switch (pathname) {
     case paths.home:
+      console.log('HOME');
       const token = LocalStorageService.getToken();
+
 
       if (!token) {
         window.location.href = routes.sign_in;
