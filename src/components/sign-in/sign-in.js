@@ -5,12 +5,15 @@ import { showNotification } from '../../shared/notifications';
 import { ERROR_MESSAGES } from '../../shared/constants/error-messages';
 
 export const signInHandler = () => {
+
+  console.log('LIYNGY<JFMJYKGLMGU:Kaergaer');
+
   const signInForm = document.querySelector('.sign-in__form');
   const signInBtn = document.getElementById('signInBtn');
   const emailInput = document.getElementById('email');
   const passwordInput = document.getElementById('password');
   const recoverEmailInput = document.getElementById('recoverEmailInput');
-  const recoverBtn = document.getElementById('recoverBtn');
+  const recoverBtn = document.getElementById('recoverBtn');  
 
   const formFields = {
     email: {

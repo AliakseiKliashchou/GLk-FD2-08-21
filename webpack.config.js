@@ -10,8 +10,8 @@ module.exports = {
     profile: './src/components/profile/profile.js'
   },
   output: {
-    filename: '[name].bundle.[chunkhash].js',
-    path: path.resolve(__dirname, 'dist')
+    filename: 'bundle.[chunkhash].js',
+    path: path.resolve(__dirname, 'build')
   },
   plugins: [
     new HTMLWebpackPlugin({
