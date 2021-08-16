@@ -10,7 +10,7 @@ export const signInHandler = () => {
   const emailInput = document.getElementById('email');
   const passwordInput = document.getElementById('password');
   const recoverEmailInput = document.getElementById('recoverEmailInput');
-  const recoverBtn = document.getElementById('recoverBtn');
+  const recoverBtn = document.getElementById('recoverBtn');  
 
   const formFields = {
     email: {
