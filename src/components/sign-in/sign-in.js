@@ -5,6 +5,9 @@ import { showNotification } from '../../shared/notifications';
 import { ERROR_MESSAGES } from '../../shared/constants/error-messages';
 
 export const signInHandler = () => {
+
+  console.log('LIYNGY<JFMJYKGLMGU:K');
+
   const signInForm = document.querySelector('.sign-in__form');
   const signInBtn = document.getElementById('signInBtn');
   const emailInput = document.getElementById('email');
